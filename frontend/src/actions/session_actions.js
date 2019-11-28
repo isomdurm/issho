@@ -48,5 +48,5 @@ export const signin = user => dispatch =>
 export const signout = () => dispatch => {
   localStorage.removeItem("jwtToken");
   APIUtil.setAuthToken(false);
-  dispatch(logoutUser());
+  dispatch(signoutUser());
 };
