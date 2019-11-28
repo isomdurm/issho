@@ -1,0 +1,48 @@
+{
+  "name": "issho",
+  "version": "1.0.0",
+  "description": "responsible social media application",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "server": "nodemon app.js",
+    "frontend-install": "npm install --prefix frontend",
+    "frontend": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run frontend\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isomdurm/issho.git"
+  },
+  "keywords": [
+    "responsible",
+    "social",
+    "media",
+    "app",
+    "isom",
+    "durm",
+    "issho",
+    "together"
+  ],
+  "author": "isom.tech",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/isomdurm/issho/issues"
+  },
+  "homepage": "https://github.com/isomdurm/issho#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "concurrently": "^5.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.7.12",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "validator": "^12.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.1"
+  }
+}
