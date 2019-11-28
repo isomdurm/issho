@@ -4,10 +4,10 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 
 const Chat = require('../../models/Chat');
-const validateChatInput = require("../../validation/chats");
+const validateChatInput = require("../../validations/chats");
 
 const Message = require('../../models/Message');
-const validateMessageInput = require("../../validation/messages");
+const validateMessageInput = require("../../validations/messages");
 
 router.get(
 	"/", 
