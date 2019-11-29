@@ -5,6 +5,7 @@ class Chats extends React.Component {
     super(props);
 
     this.state = {
+    	loaded: false,
     	chat: {
       		users: "",
       		name: "",
@@ -17,7 +18,8 @@ class Chats extends React.Component {
   }
 
   componentDidMount() {
-  	this.props.getChats();
+  	this.props.getChats()
+  		.then(() => this.setState({ loaded: true }));
   }
 
 
@@ -31,19 +33,30 @@ class Chats extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    
+
     let chat = this.state.chat;
 
     this.props.createChat(chat);
   }
 
   render() {
+  	if (!this.state.loaded) {
+      return null;
+    }
+
   	let chats = this.props.chats;
+
     return (
     
       <div className="chats">
         <h2 className="chats-title bold">Chats</h2>
-  
+  		
+  		<ul>
+          {chats.map(chat => {
+            return <li key={chat.id}> { chat._id } </li>
+          })}
+        </ul>
+          
 
         <form onSubmit={this.handleSubmit} className="chat-form">
           	<input
