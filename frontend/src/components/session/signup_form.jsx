@@ -1,26 +1,28 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 
-class SignInForm extends React.Component {
+class SignupForm extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
+      password2: "",
       errors: {}
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.renderErrors = this.renderErrors.bind(this);
+    this.clearedErrors = false;
   }
 
   componentDidMount() {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.currentUser === true) {
-      this.props.history.push("/");
+    if (nextProps.signedIn === true) {
+      this.props.history.push("/signin");
     }
 
     this.setState({ errors: nextProps.errors });
@@ -35,14 +37,15 @@ class SignInForm extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
     let user = {
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
+      password2: this.state.password2
     };
 
-    this.props.signin(user);
-    this.props.history.push("/home");
+    this.props.signup(user, this.props.history);
   }
 
   renderErrors() {
@@ -50,7 +53,9 @@ class SignInForm extends React.Component {
     let error = this.state.errors[errorsArray[0]];
     return (
       <div className="error">
-        <div className="error-text">{error}</div>
+        <div className="error-text">
+          {error}
+        </div>
       </div>
     );
   }
@@ -60,6 +65,22 @@ class SignInForm extends React.Component {
       <div className="session-form-container">
         <form className="session-form fade-in-down" onSubmit={this.handleSubmit}>
           <div className="session-form-items">
+            <input
+              type="text"
+              value={this.state.firstName}
+              onChange={this.update("firstName")}
+              placeholder="First Name"
+              className="session-form-item"
+            />
+
+            <input
+              type="text"
+              value={this.state.lastName}
+              onChange={this.update("lastName")}
+              placeholder="Last Name"
+              className="session-form-item"
+            />
+
             <input
               type="text"
               value={this.state.email}
@@ -77,8 +98,17 @@ class SignInForm extends React.Component {
             />
 
             <input
+              type="password"
+              value={this.state.password2}
+              onChange={this.update("password2")}
+              placeholder="Confirm Password"
+              className="session-form-item"
+            />
+
+            <input
               type="submit"
-              value="Log In"
+              value="Sign Up"
+              // className="session-form-item"
               className="session-form-submit"
             />
             {this.renderErrors()}
@@ -89,4 +119,4 @@ class SignInForm extends React.Component {
   }
 }
 
-export default withRouter(SignInForm);
+export default withRouter(SignupForm);
