@@ -3,15 +3,15 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const passport = require("passport");
 
-const Post = require('../../models/Post');
-const validatePostInput = require("../../validations/posts");
+const Comment = require('../../models/Comment');
+const validateCommentInput = require("../../validations/comments");
 
 router.get(
 	"/", 
 	(req, res) => {
-    	Post.find()
+    	Comment.find()
       		.sort({ date: -1 })
-      		.then(posts => res.json(posts))
+      		.then(comments => res.json(comments))
       		.catch(err => res.status(400).json(err));
 	}
 );
@@ -19,9 +19,9 @@ router.get(
 router.get(
 	"/:id", 
 	(req, res) => {
-		Post.find({ chat: req.params.id })
+		Comment.find({ chat: req.params.id })
     		.sort({ date: -1 })
-    		.then(post => res.json(post))
+    		.then(comment => res.json(comment))
     		.catch(err => res.status(400).json(err));
 	}
 );
@@ -29,18 +29,18 @@ router.get(
 router.post(
  	"/:id",
 	(req, res) => {
-    	const { errors, isValid } = validatePostInput(req.body);
+    	const { errors, isValid } = validateCommentInput(req.body);
 
 	    if(!isValid){
 	      return res.status(400).json(errors);
 	    };
 
-	    const newPost = new Post({
+	    const newComment = new Comment({
 	    });
 
-    	newPost
+    	newComment
     		.save()
-    		.then(post => res.json(post));
+    		.then(comment => res.json(comment));
     }
 );
 

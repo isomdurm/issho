@@ -101,4 +101,20 @@ router.post("/signin", (req, res) => {
   });
 });
 
+// router.post(
+//   '/:username/follow', 
+//   function(req, res, next) {
+//     var profileId = req.user._id;
+
+//     User.findById(req.payload.id).then(function(user){
+//       if (!user) { return res.sendStatus(401); }
+
+//       return user.follow(profileId).then(function(){
+//         return res.json({profile: req.profile.toProfileJSONFor(user)});
+//       });
+//     })
+//     .catch(next);
+//   }
+// );
+
 module.exports = router;

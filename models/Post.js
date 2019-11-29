@@ -2,31 +2,34 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-const MessageSchema = new Schema({
-
-  sender: {
+const PostSchema = new Schema({
+  
+  user: {
     type: Schema.Types.ObjectId,
     ref: 'users'
   },
 
-  chat: {
-  	type: Schema.Types.ObjectId,
-  	ref: 'chats'
-  },
-
   body: {
-    type: String,
-    required: true
+  	type: String
   },
 
   media_url: {
   	type: []
   },
 
+  location: {
+  	type: String
+  },
+
+  privacy: {
+  	type: String
+  },
+
   date: {
     type: Date,
     default: Date.now
   }
+
 });
 
-module.exports = User = mongoose.model('messages', MessageSchema);
+module.exports = Post = mongoose.model('posts', PostSchema);

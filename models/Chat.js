@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 
 const ChatSchema = new Schema({
+
   users: {
   	type: []
   },
@@ -27,6 +28,7 @@ const ChatSchema = new Schema({
     type: Date,
     default: Date.now
   }
+
 });
 
-module.exports = User = mongoose.model('chats', ChatSchema);
+module.exports = Chat = mongoose.model('chats', ChatSchema);

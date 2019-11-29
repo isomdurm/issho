@@ -13,6 +13,8 @@ const io = require('socket.io')(http);
 const users = require("./routes/api/users");
 const chats = require("./routes/api/chats");
 const news = require("./routes/api/news");
+const posts = require("./routes/api/posts");
+const comments = require("./routes/api/comments");
 
 
 // PRODUCT LAUNCH
@@ -47,6 +49,8 @@ app.use(bodyParser.json());
 app.use("/api/users", users);
 app.use("/api/chats", chats);
 app.use("/api/news", news);
+app.use("/api/posts", posts);
+app.use("/api/comments", comments);
 
 const port = process.env.PORT || 5000;
 app.listen(process.env.PORT || 5000);
