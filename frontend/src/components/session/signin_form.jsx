@@ -13,9 +13,23 @@ class SignInForm extends React.Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.renderErrors = this.renderErrors.bind(this);
+    this.fetchTopHeadlines = this.fetchTopHeadlines.bind(this);
   }
 
   componentDidMount() {
+    this.fetchTopHeadlines();
+  }
+
+  fetchTopHeadlines() {
+    fetch('/api/top-headlines', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+    }).catch((error) => {
+      console.log(error)
+    });
   }
 
   componentWillReceiveProps(nextProps) {
