@@ -6,6 +6,9 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const path = require('path');
 
+// News API
+const NewsAPI = require('newsapi');
+
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
@@ -18,6 +21,16 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
   })
 }
+
+app.get('/api/top-headlines', (req, res) => {
+  const newsapi = new NewsAPI("newsapikey");
+
+  newsapi.v2.topHeadlines({
+    q: 'bitcoin'
+  }).then(response => {
+    res.json(response);
+  });
+});
 
 mongoose
   .connect(db, {
