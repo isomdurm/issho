@@ -1,14 +1,10 @@
 const Validator = require("validator");
 const validText = require("./valid-text");
 
-module.exports = function validateMessageInput(data){
+module.exports = function validateChatInput(data){
     let errors = {};
 
-    data.name = validText(data.name)? data.name : "";
-
-    if(Validator.isEmpty(data.name)){
-        errors.body = "create a name for your message"
-    };
+    data.chat = validText(data.chat)? data.chat : "";
  
     return { 
         errors, 

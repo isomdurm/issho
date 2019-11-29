@@ -30,31 +30,9 @@ router.get(
 );
 
 router.post(
-	"/:id", 
-  	passport.authenticate("jwt", { session: false }),
-  	(req, res) => {
-    	const { errors, isValid } = validateMessageInput(req.body);
-
-	    if (!isValid) {
-    	  return res.status(400).json(errors);
-    	}
-
-    	const newMessage = new Message({
-      		sender: req.user.id,
-      		chat: req.params.id,
-      		body: req.body.body,
-      		media_urls: req.body.media_urls
-    	});
-
-    	newMessage.save().then(message => res.json(message));
-  	}
-);
-
-router.post(
- 	"/",
- 	passport.authenticate("jwt", { session: false }), 
+ 	"/:id",
 	(req, res) => {
-    	const { errors, isValid } = validateEventInput(req.body);
+    	const { errors, isValid } = validateChatInput(req.body);
 
 	    if(!isValid){
 	      return res.status(400).json(errors);
@@ -64,8 +42,7 @@ router.post(
 	        users: req.body.users,
 	        name: req.body.name, 
 	        color: req.body.color,
-	        emoji: req.body.emoji,
-	        image_url: req.body.image_url
+	        emoji: req.body.emoji
 	    });
 
     	newChat

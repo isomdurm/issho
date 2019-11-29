@@ -9,6 +9,6 @@ export const fetchChat = chatId => {
 };
 
 export const createChat = data => {
-  return axios.patch(`/api/chats/${data.id}`, data);
+  return axios.post(`/api/chats/${data.chat}`, data);
 };
 
