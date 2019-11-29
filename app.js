@@ -6,31 +6,22 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const path = require('path');
 
-// News API
-const NewsAPI = require('newsapi');
-
+// Messages Sockets
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 const users = require("./routes/api/users");
 const chats = require("./routes/api/chats");
+const news = require("./routes/api/news");
 
+
+// PRODUCT LAUNCH
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('frontend/build'));
   app.get('/', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
   })
 }
-
-app.get('/api/top-headlines', (req, res) => {
-  const newsapi = new NewsAPI("newsapikey");
-
-  newsapi.v2.topHeadlines({
-    q: 'bitcoin'
-  }).then(response => {
-    res.json(response);
-  });
-});
 
 mongoose
   .connect(db, {
@@ -40,6 +31,8 @@ mongoose
   .then(() => console.log("Connected to MongoDB successfully"))
   .catch(err => console.log(err));
 
+
+// BASE
 app.get("/", (req, res) => res.send("Hello darkness my old friend"));
 
 app.use(passport.initialize());
@@ -49,8 +42,11 @@ app.use(express.static(__dirname));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+
+
 app.use("/api/users", users);
 app.use("/api/chats", chats);
+app.use("/api/news", news);
 
 const port = process.env.PORT || 5000;
 app.listen(process.env.PORT || 5000);
