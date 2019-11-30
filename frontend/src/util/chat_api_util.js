@@ -12,3 +12,15 @@ export const createChat = data => {
   return axios.post(`/api/chats/${data.chat}`, data);
 };
 
+export const fetchMessages = () => {
+  return axios.get(`/api/messages`);
+};
+
+export const fetchMessage = messageId => {
+  return axios.post(`/api/messages/${messageId}`);
+};
+
+
+export const createMessage = data => {
+  return axios.post(`/api/messages/${data}`, data);
+};

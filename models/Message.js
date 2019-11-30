@@ -15,8 +15,7 @@ const MessageSchema = new Schema({
   },
 
   body: {
-    type: String,
-    required: true
+    type: String
   },
 
   media_url: {

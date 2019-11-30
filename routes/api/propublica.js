@@ -4,11 +4,16 @@ const axios = require('axios');
 const keys = require('../../config/keys')
 
 router.get(
-	'/local-officials', 
+	'/house/bills/introduced', 
 	(req, res) => {
-		axios.get(`https://www.googleapis.com/civicinfo/v2/representatives?address=23455%20Highway%201&key=${keys.googleCivicsApiKey}`)
+
+		axios.get('https://api.propublica.org/congress/v1/115/house/bills/introduced.json', { 
+    		headers: { 
+      			'X-API-Key': keys.proPublicaApiKey 
+    		}
+  		})
   		.then(response => {
-    		res.json(response.data.officials);
+    		res.json(response.data);
   		})
   		.catch(error => {
     		console.log(error);

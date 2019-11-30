@@ -14,8 +14,10 @@ const users = require("./routes/api/users");
 const chats = require("./routes/api/chats");
 const news = require("./routes/api/news");
 const posts = require("./routes/api/posts");
-const comments = require("./routes/api/comments");
+const comments = require("./routes/api/comments")
+const propublica = require("./routes/api/propublica");
 const civics = require("./routes/api/civics");
+const messages = require("./routes/api/messages");
 
 
 // PRODUCT LAUNCH
@@ -53,6 +55,8 @@ app.use("/api/news", news);
 app.use("/api/posts", posts);
 app.use("/api/comments", comments);
 app.use("/api/civics", civics);
+app.use("/api/messages", messages);
+app.use("/api/propublica", propublica);
 
 const port = process.env.PORT || 5000;
 app.listen(process.env.PORT || 5000);

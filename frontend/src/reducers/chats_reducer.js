@@ -1,8 +1,10 @@
-import { RECEIVE_CHATS, RECEIVE_CHAT } from "../actions/chat_actions";
+import { RECEIVE_CHATS, RECEIVE_CHAT, RECEIVE_MESSAGES, RECEIVE_MESSAGE } from "../actions/chat_actions";
 
 
 const ChatsReducer = (
-    state = {},
+    state = {
+      messages: {}, chats: {}
+    },
     action 
     ) => {
       Object.freeze(state);
@@ -12,7 +14,13 @@ const ChatsReducer = (
           newState = action.chats.data;
           return newState;
         case RECEIVE_CHAT:
-          newState = action.chat.data;
+          newState = action.chats.data;
+          return newState;
+        case RECEIVE_MESSAGES: 
+          newState = action.messages.data;
+          return newState;
+        case RECEIVE_MESSAGE:
+          newState = action.messages.data;
           return newState;
         default: 
           return state;

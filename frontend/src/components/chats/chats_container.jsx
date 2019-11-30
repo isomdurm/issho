@@ -5,7 +5,6 @@ import Chats from './chats';
 
 const mSTP = (state, ownProps) => {
   return {
-    chats: state.chats,
     user: state.session.user
   };
 };
