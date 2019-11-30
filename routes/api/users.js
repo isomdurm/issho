@@ -6,6 +6,8 @@ const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const keys = require('../../config/keys');
 
+const Nexmo = require('nexmo');
+
 const validateRegisterInput = require("../../validations/register");
 const validateSignInInput = require("../../validations/signin");
 
@@ -19,10 +21,16 @@ router.get(
       firstName: req.user.firstName,
       lastName: req.user.lastName,
       id: req.user.id,
-      email: req.user.email
+      email: req.user.email,
+      requestId: req.user.requestId
     });
   }
 );
+
+const nexmo = new Nexmo({
+  apiKey: keys.nexmoApiKey,
+  apiSecret: keys.nexmoApiSecret
+});
 
 router.post("/register", (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
@@ -39,27 +47,72 @@ router.post("/register", (req, res) => {
         .status(400)
         .json({ email: "A user has already registered with this address" });
     } else {
-      // Otherwise create a new user
-      const newUser = new User({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        password: req.body.password
-      });
 
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
-          if (err) throw err;
-          newUser.password = hash;
-          newUser
-            .save()
-            .then(user => res.json(user))
-            .catch(err => console.log(err));
-        });
-      });
+      let phoneNumber = req.body.phoneNumber;
+
+      nexmo.verify.request({number: phoneNumber, brand: 'Issho'}, (err, result) => {
+        if (err) {
+          res.sendStatus(500);
+        } else {
+
+          let requestId = result.request_id;
+          
+          if (result.status == '0') {
+
+            const newUser = new User ({
+              firstName: req.body.firstName,
+              lastName: req.body.lastName,
+              email: req.body.email,
+              password: req.body.password,
+              requestId: result.request_id
+            });
+
+            console.log(newUser);
+
+            bcrypt.genSalt(10, (err, salt) => {
+              bcrypt.hash(newUser.password, salt, (err, hash) => {
+                if (err) throw err;
+                
+                newUser.password = hash;
+                newUser
+                  .save()
+                  .then(user => res.json(user))
+                  .catch(err => console.log(err));
+              });
+            });
+          } else {
+            nexmo.verify.control({
+              request_id: requestId,
+              cmd: 'cancel'
+            }, (err, result) => {
+              console.log(err ? err : result)
+            });
+            res.status(401).send(result.error_text);
+          }
+        }
+      })
     }
   });
 });
+
+router.post('/verify', (req, res) => {
+  let pin = req.body.pin;
+  let requestId = req.body.requestId;
+ 
+  nexmo.verify.check({request_id: requestId, code: pin}, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      if (result && result.status == '0') { 
+        // need to update user profile to show two factor accepted
+        res.json(result);
+      } else {
+        res.status(401).send(result.error_text);
+      }
+    }
+  });
+});
+
 
 router.post("/signin", (req, res) => {
   const { errors, isValid } = validateSignInInput(req.body);

@@ -5,6 +5,7 @@ export const RECEIVE_CURRENT_USER = "RECEIVE_CURRENT_USER";
 export const RECEIVE_SESSION_ERRORS = "RECEIVE_SESSION_ERRORS";
 export const RECEIVE_USER_SIGNOUT = "RECEIVE_USER_SIGNOUT";
 export const RECEIVE_USER_SIGNIN = "RECEIVE_USER_SIGNIN";
+export const RECEIVE_USER_VERIFY = "RECEIVE_USER_VERIFY";
 
 export const receiveCurrentUser = currentUser => ({
   type: RECEIVE_CURRENT_USER,
@@ -14,6 +15,12 @@ export const receiveCurrentUser = currentUser => ({
 export const receiveUserSignIn = () => ({
   type: RECEIVE_USER_SIGNIN
 });
+
+export const receiveUserVerify = data => ({
+  type: RECEIVE_USER_VERIFY,
+  data
+});
+
 
 export const receiveErrors = errors => ({
   type: RECEIVE_SESSION_ERRORS,
@@ -26,15 +33,14 @@ export const signoutUser = () => ({
 
 export const signup = user => dispatch =>
   APIUtil.signup(user)
-    .then(() => dispatch(receiveUserSignIn()),
-      err => dispatch(receiveErrors(err.response.data))
-  );
+    .then(res => {
+      console.log(res);
+      dispatch(receiveCurrentUser(res.data))
+    });
 
 export const signin = user => dispatch =>
   APIUtil.signin(user)
     .then(res => {
-      console.log(res);
-      
       const { token } = res.data;
       localStorage.setItem("jwtToken", token);
       APIUtil.setAuthToken(token);
@@ -44,6 +50,12 @@ export const signin = user => dispatch =>
     .catch(err => {
       dispatch(receiveErrors(err.response.data));
     });
+
+export const verify = data => dispatch =>
+  APIUtil.verify(data)
+    .then(() => dispatch(receiveUserSignIn()),
+      err => dispatch(receiveErrors(err.response.data))
+  );
 
 export const signout = () => dispatch => {
   localStorage.removeItem("jwtToken");

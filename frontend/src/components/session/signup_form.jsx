@@ -10,6 +10,8 @@ class SignupForm extends React.Component {
       email: "",
       password: "",
       password2: "",
+      phoneNumber: "",
+      requestId: "",
       errors: {}
     };
 
@@ -21,9 +23,6 @@ class SignupForm extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.signedIn === true) {
-      this.props.history.push("/signin");
-    }
 
     this.setState({ errors: nextProps.errors });
   }
@@ -42,10 +41,15 @@ class SignupForm extends React.Component {
       lastName: this.state.lastName,
       email: this.state.email,
       password: this.state.password,
-      password2: this.state.password2
+      password2: this.state.password2,
+      phoneNumber: this.state.phoneNumber,
+      requestId: this.state.requestId
     };
 
-    this.props.signup(user, this.props.history);
+    this.props.signup(user)
+      .then((user) => {
+        this.props.history.push('/verify');
+      });
   }
 
   renderErrors() {
@@ -102,6 +106,14 @@ class SignupForm extends React.Component {
               value={this.state.password2}
               onChange={this.update("password2")}
               placeholder="Confirm Password"
+              className="session-form-item"
+            />
+
+            <input
+              type="text"
+              value={this.state.phoneNumber}
+              onChange={this.update("phoneNumber")}
+              placeholder="Number"
               className="session-form-item"
             />
 

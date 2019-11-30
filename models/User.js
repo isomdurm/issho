@@ -18,6 +18,15 @@ const UserSchema = new Schema({
     required: true
   },
 
+  phoneNumber: {
+    type: String
+  },
+
+  requestId: {
+    type: String,
+    required: true
+  },
+
   suffixName: {
     type: String
   },
