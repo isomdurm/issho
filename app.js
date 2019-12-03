@@ -15,7 +15,7 @@ const chats = require("./routes/api/chats");
 const news = require("./routes/api/news");
 const posts = require("./routes/api/posts");
 const comments = require("./routes/api/comments")
-const propublica = require("./routes/api/propublica");
+const bills = require("./routes/api/bills");
 const civics = require("./routes/api/civics");
 const messages = require("./routes/api/messages");
 
@@ -56,7 +56,7 @@ app.use("/api/posts", posts);
 app.use("/api/comments", comments);
 app.use("/api/civics", civics);
 app.use("/api/messages", messages);
-app.use("/api/propublica", propublica);
+app.use("/api/bills", bills);
 
 const port = process.env.PORT || 5000;
 app.listen(process.env.PORT || 5000);
