@@ -3,11 +3,11 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const passport = require("passport");
 
-const Chat = require('../../models/Chat');
-const validateChatInput = require("../../validations/chats");
+const Chat = require('../../../models/Chat');
+const validateChatInput = require("../../../validations/chats");
 
-const Message = require('../../models/Message');
-const validateMessageInput = require("../../validations/messages");
+const Message = require('../../../models/Message');
+const validateMessageInput = require("../../../validations/messages");
 
 router.get(
 	"/", 

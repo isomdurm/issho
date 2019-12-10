@@ -17,7 +17,7 @@ export const fetchMessages = () => {
 };
 
 export const fetchMessage = messageId => {
-  return axios.post(`/api/messages/${messageId}`);
+  return axios.get(`/api/messages/${messageId}`);
 };
 
 

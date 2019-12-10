@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const NewsAPI = require('newsapi');
-const keys = require('../../config/keys')
+const keys = require('../../../config/keys')
 
 const newsapi = new NewsAPI(keys.newsApiKey);
 

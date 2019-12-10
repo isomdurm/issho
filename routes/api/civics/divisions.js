@@ -3,10 +3,11 @@ const router = express.Router();
 const axios = require('axios');
 const keys = require('../../config/keys')
 
+// List Divisions by Search
 router.get(
-	'/local-officials', 
+	'/divisions/search/:query', 
 	(req, res) => {
-		axios.get(`https://www.googleapis.com/civicinfo/v2/representatives?address=23455%20Highway%201&key=${keys.googleCivicsApiKey}`)
+		axios.get(`https://www.googleapis.com/civicinfo/v2/divisions?query=${req.params.query}&key=${keys.googleCivicsApiKey}`)
   		.then(response => {
     		res.json(response.data.officials);
   		})

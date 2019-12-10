@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const axios = require('axios');
-const keys = require('../../config/keys')
+const keys = require('../../../config/keys')
 
 // Recent Statements
 router.get(
-	'/statements/recent', 
+	'/recent', 
 	(req, res) => {
 
 		axios.get(`https://api.propublica.org/congress/v1/statements/latest.json`, { 
@@ -24,7 +24,7 @@ router.get(
 
 // Statements by Specific Member
 router.get(
-	'/statements/members/:member_id', 
+	'/members/:member_id', 
 	(req, res) => {
 
 		axios.get(`https://api.propublica.org/congress/v1/members/${req.params.member_id}/statements/116.json`, { 
@@ -43,7 +43,7 @@ router.get(
 
 // Statements by Specific Bill
 router.get(
-	'/statements/bill/:bill_id', 
+	'/bill/:bill_id', 
 	(req, res) => {
 
 		axios.get(`https://api.propublica.org/congress/v1/116/bills/${req.params.bill_id}/statements.json`, { 
@@ -62,7 +62,7 @@ router.get(
 
 // Statements by Specific Committee
 router.get(
-	'/statements/:committee_id', 
+	'/:committee_id', 
 	(req, res) => {
 
 		axios.get(`https://api.propublica.org/congress/v1/statements/committees/${req.params.committee_id}.json`, { 

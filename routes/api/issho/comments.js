@@ -3,8 +3,8 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const passport = require("passport");
 
-const Comment = require('../../models/Comment');
-const validateCommentInput = require("../../validations/comments");
+const Comment = require('../../../models/Comment');
+const validateCommentInput = require("../../../validations/comments");
 
 router.get(
 	"/", 

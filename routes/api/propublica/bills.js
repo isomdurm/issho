@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const axios = require('axios');
-const keys = require('../../config/keys')
+const keys = require('../../../config/keys')
 
-// Congress Recent Bills (introduced, updated, active, passed, enacted, vetoed)
+// Senate Recent Bills (introduced, updated, active, passed, enacted, vetoed)
 router.get(
-	'/bills/congress/:type', 
+	'/senate/:type', 
 	(req, res) => {
 
-		axios.get(`https://api.propublica.org/congress/v1/116/congress/bills/${req.params.type}.json`, { 
+		axios.get(`https://api.propublica.org/congress/v1/116/senate/bills/${req.params.type}.json`, { 
     		headers: { 
       			'X-API-Key': keys.proPublicaApiKey 
     		}
@@ -24,7 +24,7 @@ router.get(
 
 // House Recent Bills (introduced, updated, active, passed, enacted, vetoed)
 router.get(
-  '/bills/house/:type', 
+  '/house/:type', 
   (req, res) => {
 
     axios.get(`https://api.propublica.org/congress/v1/116/house/bills/${req.params.type}.json`, { 
@@ -41,9 +41,41 @@ router.get(
   }
 );
 
+// Seed Members of House to Database
+router.get(
+  '/house/:type/seed', 
+  (req, res) => {
+
+    axios.get(`https://api.propublica.org/congress/v1/116/house/bills/${req.params.type}.json`, { 
+      headers: { 
+          'X-API-Key': keys.proPublicaApiKey 
+      }
+    })
+    .then(responses => {
+      const billsArr = responses.data.results[0].bills.map(function(val, i) {
+        return {key: i, value: val};
+      });
+
+      billsArr.forEach(bill => {
+        axios.post(`http://localhost:5000/api/issho_bills/${bill.value.id}`, bill.value)
+        .then(response => {
+          console.log(response);
+        })
+      })
+
+      res.json(responses.data.results[0].bills);
+    })
+    .catch(error => {
+      res.json(error);
+    });
+  }
+);
+
+
+
 // Specific Bills
 router.get(
-  '/bills/:id', 
+  '/:id', 
   (req, res) => {
 
     axios.get(`https://api.propublica.org/congress/v1/116/bills/${req.params.id}.json`, { 
@@ -62,7 +94,7 @@ router.get(
 
 // Bills By Search Parameters
 router.get(
-  '/bills/subjects/search', 
+  '/subjects/search', 
   (req, res) => {
 
     axios.get(`https://api.propublica.org/congress/v1/bills/subjects.json?query=${req.query}`, { 
@@ -81,7 +113,7 @@ router.get(
 
 // Specific Bill Cosponsors
 router.get(
-  '/bills/:id/cosponsors', 
+  '/:id/cosponsors', 
   (req, res) => {
 
     axios.get(`https://api.propublica.org/congress/v1/116/bills/${req.params.id}/cosponsors.json`, { 
@@ -100,7 +132,7 @@ router.get(
 
 // Specific Bill Subjects
 router.get(
-  '/bills/:id/subjects', 
+  '/:id/subjects', 
   (req, res) => {
 
     axios.get(`https://api.propublica.org/congress/v1/116/bills/${req.params.id}/subjects.json`, { 
@@ -119,7 +151,7 @@ router.get(
 
 // Recent Bills By Member
 router.get(
-  '/bills/:type/members/:member_id', 
+  '/:type/members/:member_id', 
   (req, res) => {
 
     axios.get(`https://api.propublica.org/congress/v1/members/${req.params.member_id}/bills/${req.params.type}.json`, { 

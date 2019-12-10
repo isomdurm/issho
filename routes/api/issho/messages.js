@@ -3,15 +3,14 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const passport = require("passport");
 
-const Post = require('../../models/Post');
-const validatePostInput = require("../../validations/posts");
+const Message = require('../../../models/Message');
 
 router.get(
 	"/", 
 	(req, res) => {
-    	Post.find()
+    	Message.find()
       		.sort({ date: -1 })
-      		.then(posts => res.json(posts))
+      		.then(messages => res.json(messages))
       		.catch(err => res.status(400).json(err));
 	}
 );
@@ -19,9 +18,9 @@ router.get(
 router.get(
 	"/:id", 
 	(req, res) => {
-		Post.find({ chat: req.params.id })
+		Message.find({ message: req.params.id })
     		.sort({ date: -1 })
-    		.then(post => res.json(post))
+    		.then(message => res.json(message))
     		.catch(err => res.status(400).json(err));
 	}
 );
@@ -29,18 +28,17 @@ router.get(
 router.post(
  	"/:id",
 	(req, res) => {
-    	const { errors, isValid } = validatePostInput(req.body);
+		console.log(req.body);
 
-	    if(!isValid){
-	      return res.status(400).json(errors);
-	    };
-
-	    const newPost = new Post({
+	    const newMessage = new Message ({
+	    	sender: req.body.sender,
+	    	chat: req.body.chat,
+	    	body: req.body.body
 	    });
 
-    	newPost
+    	newMessage
     		.save()
-    		.then(post => res.json(post));
+    		.then(message => res.json(message));
     }
 );
 

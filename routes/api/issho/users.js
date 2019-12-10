@@ -1,15 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-const User = require("../../models/User");
+const User = require("../../../models/User");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
-const keys = require('../../config/keys');
+const keys = require('../../../config/keys');
 
 const Nexmo = require('nexmo');
 
-const validateRegisterInput = require("../../validations/register");
-const validateSignInInput = require("../../validations/signin");
+const validateRegisterInput = require("../../../validations/register");
+const validateSignInInput = require("../../../validations/signin");
 
 router.get("/test", (req, res) => res.json({ msg: "This is the users route" }));
 
